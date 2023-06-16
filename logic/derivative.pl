@@ -14,8 +14,8 @@ der(C,X,0):-
 
 %Power
 der(X^1,X,1).
-der(X,X,1) :- der(X**1,X,1). %alias
-der(X**C, X, C * X**[C-1]).
+der(X,X,1) :- der(X^1,X,1). %alias
+der(X^C, X, C * X^[C-1]).
 
 %%Operations
 %Sum
@@ -32,3 +32,13 @@ der(F/G, X, [DF*G-F*DG]/[G^2]):-
 der(F*G, X, DF*G+DG*F):-
     der(F, X, DF),
     der(G, X, DG).
+
+der_eval(F, X, V, R):-
+    number(V),
+    der(F, X, DF),
+    X is V,
+    evaluate(DF, R).
+
+%Utils
+evaluate(A,R):-
+    R is A.
