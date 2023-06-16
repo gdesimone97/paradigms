@@ -15,7 +15,12 @@ der(C,X,0):-
 %Power
 der(X^1,X,1).
 der(X,X,1) :- der(X^1,X,1). %alias
-der(X^C, X, C * X^[C-1]).
+der(X^C, X, DF):-
+    number(C),
+    DIFF is C -1,
+    DF = C * X^[DIFF];
+    nonvar(C),
+    DF = C * X^[C-1].
 
 %%Operations
 %Sum
