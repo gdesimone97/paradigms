@@ -1,7 +1,3 @@
-%Primitive func
-sub(A,B,R) :-
-    R is A - B.
-
 %%Primitive derivate
 der(sin(X),X,cos(X)).
 der(cos(X),X,-sin(X)).
@@ -21,6 +17,11 @@ der(X^C, X, DF):-
     DF = C * X^[DIFF];
     nonvar(C),
     DF = C * X^[C-1].
+
+der(X^C, Y, 0):-
+    atomic(C),
+    atomic(Y),
+    atomic(X).
 
 %%Operations
 %Sum
@@ -47,3 +48,4 @@ der_eval(F, X, V, R):-
 %Utils
 evaluate(A,R):-
     R is A.
+
