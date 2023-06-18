@@ -31,9 +31,10 @@ der(X^C, Y, 0):-
 
 %%Operations
 %Sum
-der(F+G, X, DF+DG):-
+der(F+G, X, R):-
     der(F, X, DF),
-    der(G, X, DG).
+    der(G, X, DG),
+    simp(DF+DG, R).
 
 %Div
 der(F/G, X, [DF*G-F*DG]/[G^2]):-
@@ -41,9 +42,10 @@ der(F/G, X, [DF*G-F*DG]/[G^2]):-
     der(G, X, DG).
 
 %Mult
-der(F*G, X, DF*G+DG*F):-
+der(F*G, X, R):-
     der(F, X, DF),
-    der(G, X, DG).
+    der(G, X, DG),
+    simp(DF*G+DG*F, R).
 
 der_eval(F, X, V, R):-
     number(V),
@@ -55,3 +57,24 @@ der_eval(F, X, V, R):-
 evaluate(A,R):-
     R is A.
 
+simp(X+X, 2*X).
+simp(0*X, 0).
+simp(X*0, 0).
+simp(-(-X), X).
+simp(+(-X), -X).
+simp(X*1, X).
+simp(1*X, X).
+simp(X^1, X).
+simp(X^0, 1).
+simp(X+0, X).
+simp(0+X, X).
+simp(X+Y, R):-
+    simp(X, RX),
+    simp(Y, RY),
+    R=RX+RY.
+simp(X*C, R):-
+    number(C),
+    nonvar(X),
+    R=C*X.
+simp(C*X, R):-
+    simp(X*C, R).
