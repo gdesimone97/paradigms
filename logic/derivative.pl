@@ -71,6 +71,15 @@ simp(0+X, X).
 simp(X+Y, R):-
     simp(X, RX),
     simp(Y, RY),
+    R=RX+RY;
+    RX=X,
+    simp(Y, RY),
+    R=RX+RY;
+    simp(X, RX),
+    RY=Y,
+    R=RX+RY;
+    RX=X,
+    RY=Y,
     R=RX+RY.
 simp(X*C, R):-
     number(C),
