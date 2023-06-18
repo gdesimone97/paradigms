@@ -80,10 +80,14 @@ simp(X+Y, R):-
     R=RX+RY;
     RX=X,
     RY=Y,
-    R=RX+RY.
-simp(X*C, R):-
-    number(C),
-    nonvar(X),
-    R=C*X.
-simp(C*X, R):-
-    simp(X*C, R).
+    R=RX*RY.
+simp(X*Y, R):-
+    number(X),
+    number(Y),
+    R is X * Y;
+    number(X),
+    simp(Y, RY),
+    R = X * RY;
+    number(Y),
+    simp(X, RX),
+    R  = RX * Y.
