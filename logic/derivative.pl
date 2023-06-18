@@ -84,7 +84,8 @@ simp(X+Y, RS):-
     simp(X, RX),
     RY=Y,
     R=RX+RY,
-    simp(R, RS).
+    simp(R, RS);
+    RS = X + Y.
 simp(X*Y, RS):-
     number(X),
     number(Y),
