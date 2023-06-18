@@ -68,26 +68,32 @@ simp(X^1, X).
 simp(X^0, 1).
 simp(X+0, X).
 simp(0+X, X).
-simp(X+Y, R):-
-    simp(X, RX),
-    simp(Y, RY),
-    R=RX+RY;
-    RX=X,
-    simp(Y, RY),
-    R=RX+RY;
-    simp(X, RX),
-    RY=Y,
-    R=RX+RY;
-    RX=X,
-    RY=Y,
-    R=RX*RY.
-simp(X*Y, R):-
+simp(X+Y, RS):-
     number(X),
     number(Y),
-    R is X * Y;
+    RS is X + Y ;
+    simp(X, RX),
+    simp(Y, RY),
+    R=RX+RY,
+    simp(R, RS);
+    RX=X,
+    simp(Y, RY),
+    R=RX+RY,
+    simp(R, RS);
+    simp(X, RX),
+    RY=Y,
+    R=RX+RY,
+    simp(R, RS).
+simp(X*Y, RS):-
+    number(X),
+    number(Y),
+    R is X * Y,
+    simp(R, RS);
     number(X),
     simp(Y, RY),
-    R = X * RY;
+    R = X * RY,
+    simp(R, RS);
     number(Y),
     simp(X, RX),
-    R  = RX * Y.
+    R  = RX * Y,
+    simp(R, RS).
