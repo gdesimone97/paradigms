@@ -1,6 +1,7 @@
 %%Primitive derivate
 der(sin(X),X,cos(X)).
 der(cos(X),X,-sin(X)).
+der(log(X), X, 1/x).
 der(tan(X),X,1/cos(X)*cos(X)).
 
 der(-F, X, -DF):-
