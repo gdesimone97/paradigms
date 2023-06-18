@@ -25,6 +25,7 @@ der(C*X, X, C*DF):-
     der(X, X, DF).
 
 der(X^C, Y, 0):-
+    X \= Y,
     atomic(C),
     atomic(Y),
     atomic(X).
