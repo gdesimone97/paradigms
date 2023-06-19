@@ -55,7 +55,7 @@ der_eval(F, X, V, R):-
     X is V,
     evaluate(DF, R).
 
-%Utils
+%%Utils
 evaluate(A,R):-
     R is A.
 
