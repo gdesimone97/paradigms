@@ -42,11 +42,13 @@
 (define int-div2 (lambda (n) (= 0 (remainder n 2))))
 (define (filter-stream func lst) (cons-stream (car lst) (filter func lst)))
 (define lf (filter-stream int-div2 l))
-(define (filter-stream-inf func lst)
+(define (filter-stream-inf func n lst)
   (define current (car lst))
-  (if (func current)
-      (cons current (cdr lst))
-      (filter-stream-inf func (stream-cdr lst))))
+  (if (< n 0)
+      '()
+      (if (func current)
+      (cons current (filter-stream-inf func (- n 1) (stream-cdr lst)))
+      (filter-stream-inf func (- n 1) (stream-cdr lst)))))
        
 ;(define linf (filter-stream-inf int-div2 l4))
 
