@@ -90,6 +90,24 @@ simp(X^1, X).
 simp(X^0, 1).
 simp(X+0, X).
 simp(0+X, X).
+simp(X-Y, R):-
+    simp(X+(-Y), R).
+simp(+X, R):-
+    simp(0+X, R).
+simp(X+Y, R):-
+    number(X),
+    number(Y),
+    R is X + Y.
+simp(X+Y, R):-
+    is_function(X),
+    RX = X,
+    simp(Y, RY),
+    R = RX+RY.
+simp(X+Y, R):-
+    is_function(Y),
+    RY = Y,
+    simp(X, RX),
+    R = RX+RY.
 simp(X+Y, R):-
     simp(X, RX),
     simp(Y, RY),
@@ -100,3 +118,8 @@ simp(X*Y, R):-
     simp(RX*RY, R).
 simp(X, X):-
     number(X).
+simp(X, X):-
+    is_function(X).
+is_function(X):-
+    functor(X, OP, ARG),
+    ARG is 1.
