@@ -40,7 +40,8 @@
 ; filter
 
 (define int-div2 (lambda (n) (= 0 (remainder n 2))))
-(define (filter-stream func lst) (cons-stream (car lst) (filter func lst)))
+(define (filter-stream func lst)
+  (cons-stream (car lst) (filter func lst)))
 (define lf (filter-stream int-div2 l))
 (define (filter-stream-inf func n lst)
   (define current (car lst))
@@ -60,6 +61,10 @@
 
 ; foldr
 
-
+(define (foldr-stream f init s)
+  (if (stream-null? s)
+      init
+      (f (stream-car s)
+         (foldr-stream f (stream-cdr s)))))
 
 
