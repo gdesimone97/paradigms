@@ -25,11 +25,11 @@
   (define res (+ c1 c2))
   (cons-stream res (add-series (stream-cdr s1) (stream-cdr s2))))
 
-(define l1 (cons-stream 1 '(1 2 3 4 5 6 7 8 9 10)))
-(define l2 (cons-stream 1 '(1 2 3 4 5 6 7 8 9 10)))
+(define l1 (cons-stream 1 '(1 2 3 4)))
+(define l2 (cons-stream 1 '(1 2 3 4)))
 
 (add-series l1 l2)
-(take 6 (add-series l1 l2))
+(take 2 (add-series l1 l2))
 
 (define (mul-coeff coeff1 coeff2)
   (* coeff1 coeff2))
@@ -43,23 +43,19 @@
   (cons-stream (stream-car rev-series) (get-tail (stream-cdr rev-series))))
 
 (define (mult-series-single s1 s2)
-  (if (null? s2)
-      0
-      (let (a (stream-car s1))
-           (b (car s2))
-           (res (mul-coeff a b))
-        (+ (res (mult-series a 
-  
+  (if (or (null? s2) (null? s1))
+      (* 1 0)
+      (+ (mul-coeff (stream-car s1) (stream-car s2)) (mult-series-single (stream-cdr s1) (stream-cdr s2)))))
 
 (define (mult-series s1 s2)
   (define element (stream-car s2))
   (if (stream-null? rev-series)
         (set! rev-series (list element))
         (set! rev-series (cons element rev-series)))
-  (define a (stream-car s1))
-  (define b (stream-car rev-series))
-  (define res (mul-coeff a b))
-  (cons-stream res (mult-series (stream-cdr s1) (stream-cdr s2))))
+  (define res (mult-series-single s1 rev-series))
+  (cons-stream res (mult-series s1 (stream-cdr s2))))
 
-(mult-series l1 l2)
-(take 6 (mult-series l1 l2))
+;;(mult-series l1 l2)
+l1
+l2
+(take 4 (mult-series l1 l2))
