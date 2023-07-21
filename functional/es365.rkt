@@ -49,12 +49,15 @@
       b
       (fixpoint tollerance (stream-cdr s))))
 
-(define (sum-stream s)
-  (define (sum-stream-inner s sum)
-    (+ sum (stream-car sum)))
-  (cons-stream 0 (sum-stream-inner (stream-cdr s) 0)))
+(define (sum-series s curr-res)
+  (define res (+ curr-res (stream-car s)))
+  (cons-stream curr-res (sum-series (stream-cdr s) res)))
 
-(define l (cons-stream 1 '(2 3)))
-(sum-stream l)
+(define l (cons-stream 1 '(2 3 4 5 6 7 8 9 10 11 12)))
+(map exact->inexact (take 10 (sum-series log-series 0)))
+(map exact->inexact (take 10 (aitken (sum-series log-series 0))))
+
+
+
 
 
