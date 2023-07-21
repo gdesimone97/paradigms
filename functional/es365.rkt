@@ -56,8 +56,3 @@
 (define l (cons-stream 1 '(2 3 4 5 6 7 8 9 10 11 12)))
 (map exact->inexact (take 10 (sum-series log-series 0)))
 (map exact->inexact (take 10 (aitken (sum-series log-series 0))))
-
-
-
-
-
