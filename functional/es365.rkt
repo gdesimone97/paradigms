@@ -16,19 +16,19 @@
 (define (alt n)
   (expt -1 n))
 
-(define (log-series-inner n)
-  (cons-stream (* (alt (- n 1)) (/ 1 n)) (log-series-inner (+ n 1) )))
-
 (define (take n stream)
   (if (or (stream-null? stream) (< n 1))
           '()
        (cons (stream-car stream)
        (take (- n 1) (stream-cdr stream)))))
 
+(define (log-series-inner n)
+  (cons-stream (* (alt (- n 1)) (/ 1 n)) (log-series-inner (+ n 1) )))
+
 (define log-series
   (log-series-inner 1))
 
-(time (take 10 log-series))
+;(time (take 10 log-series))
 
 (define (op s)
   (let ((x2 (stream-caddr s))
@@ -41,8 +41,20 @@
   (define res (op s))
   (cons-stream res (aitken (stream-cdr s))))
 
+(define (fixpoint tollerance s)
+  (define a (stream-car s))
+  (define b (stream-cadr s))
+  (define diff (abs (- a b)))
+  (if (< diff tollerance)
+      b
+      (fixpoint tollerance (stream-cdr s))))
 
-(time (take 5 (aitken log-series)))
+(define (sum-stream s)
+  (define (sum-stream-inner s sum)
+    (+ sum (stream-car sum)))
+  (cons-stream 0 (sum-stream-inner (stream-cdr s) 0)))
 
-(exact->inexact (foldr + 0 (take 40 (aitken log-series))))
+(define l (cons-stream 1 '(2 3)))
+(sum-stream l)
+
 
