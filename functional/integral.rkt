@@ -31,6 +31,7 @@
  ; assume the streams are infinite
  (cons-stream (+ (stream-car s1) (stream-car s2))
  (add-streams (stream-cdr s1) (stream-cdr s2))))
+
 (define (integral f a b)
  ; return a stream of increasingly better approximations
  (define midpoint (/ (+ a b) 2))
