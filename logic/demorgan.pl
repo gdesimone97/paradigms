@@ -24,14 +24,20 @@ parse(A,R):-
     compound(A),
     exp(A,R).
 
-or(A,B, R1+R2):-
-    parse(A,B,R1,R2).
+or(A,B,R):-
+    parse(A,B,R1,R2),
+    RT = R1+R2,
+    simp(RT,R).
 
-and(A,B, R1*R2):-
-    parse(A,B,R1,R2).
+and(A,B, R):-
+    parse(A,B,R1,R2),
+    RT = R1*R2,
+    simp(RT,R).
 
 not(A, -R):-
-    parse(A,R).
+    parse(A,RN),
+    RT = -RN,
+    simp(RT,R).
 
 exp(E,R):-
      compound_name_arguments(E, F, A),
@@ -50,10 +56,13 @@ exp(E,R):-
     ).
 
 distr(E1*(E2+E3), E1*E2+E1*E3).
-distr((E2+E3)*E1, R):-
-    distr(E1*(E2+E3), R).
-
 demorgan(-(E1+E2), -E1*(-E2)).
-demorgan(-(E1*E2), -E1 + (-E2)).
-
+demorgan(-(E1*E2), -E1+(-E2)).
 doub(-(-E1), E1).
+
+simp(E,R):-
+       (distr(E,RT);
+        demorgan(E,RT);
+        doub(E,RT)   ),
+        simp(RT,R);
+        R = E.
