@@ -1,0 +1,26 @@
+bin(1).
+bin(0).
+bin('1').
+bin('0').
+
+binary(Str, Dec):-
+    string_chars(Str, List),
+    binary_inner(List,0,Dec).
+
+binary_inner([],Start,Decimal):-
+    Decimal is Start.
+
+binary_inner(List,Start,Decimal):-
+    nth0(0, List, Element),
+    bin(Element),
+    select(Element,List,NewList),
+    length(List,Length),
+    Position is Length - 1,
+    compute(Element,Position,Result),
+    Temp is Start + Result,
+    binary_inner(NewList,Temp,Decimal).
+
+compute(Element,Position,Result):-
+    Temp is 2 ** Position,
+    atom_number(Element,Num),
+    Result is Num * Temp.
